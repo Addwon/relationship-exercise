@@ -22,7 +22,7 @@
         </div>
         <div class="col-3">
             <label id="labelFirstName">Country Name</label>
-            <input type="text" class="form-control" id="textcountryname" th:field="*{countryname}" placeholder="Enter first name"/>
+            <input type="text" class="form-control" id="textcountryname" th:field="*{countryname}" placeholder="Enter country name"/>
             <span th:if="${#fields.hasErrors('countryname')}" th:errors="*{countryname}"></span>
         </div>
     <br/>

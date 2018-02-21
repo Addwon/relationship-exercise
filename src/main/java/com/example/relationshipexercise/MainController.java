@@ -1,6 +1,7 @@
 package com.example.relationshipexercise;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -8,13 +9,20 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
-@RestController
+@Controller
 public class MainController {
     @Autowired
     CountryRepo countryRepo;
 
     @Autowired
     PersonRepo personRepo;
+
+    @RequestMapping("/")
+    public String showIndex(Model model){
+        model.addAttribute("person",personRepo.findAll());
+        model.addAttribute("country",countryRepo.findAll());
+        return "index";
+    }
 
     @GetMapping("/personform")
     public String addPerson(Model model){
@@ -33,6 +41,23 @@ public class MainController {
         }
     }
 
+    @GetMapping("/countryform")
+    public String addCountry(Model model){
+        model.addAttribute("country",new Country());
+        return "countryform";
+    }
+    @PostMapping("/countryform")
+    public String addCountryForm(@Valid @ModelAttribute("country") Country country, BindingResult result,
+                                   RedirectAttributes redirectAttributes){
+        if(result.hasErrors()){
+            return "countryform";
+        }
+        else{
+            countryRepo.save(country);
+            return "redirect:/";
+        }
+    }
+   /*
     @RequestMapping("/")
     public String addHere()
     {
@@ -60,11 +85,11 @@ public class MainController {
 
 
         //Update this exercise:
-        /* For each Person in the database, show where they are from. A person can be from more than one country.*/
+        //For each Person in the database, show where they are from. A person can be from more than one country.
 
 //Use this section to display a list of people and the countries they are from.
 
         return "Check the console for your details";
 
-    }
+    }*/
 }
